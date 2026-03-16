@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #3b82f6;
+  --color-secondary: #6366f1;
+  --color-accent: #f59e0b;
+}
+
+:root {
+  --color-bg-base: #f8fafc;
+  --color-text-base: #0f172a;
+  --color-card-bg: #ffffff;
+  --color-card-border: #f1f5f9;
+}
+
+.dark {
+  --color-bg-base: #020617;
+  --color-text-base: #f8fafc;
+  --color-card-bg: #0f172a;
+  --color-card-border: #1e293b;
+}
+
+body {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-base);
+  @apply transition-colors duration-300;
+}
+
+/* Global transitions for theme elements */
+* {
+  @apply transition-colors duration-300;
+}
