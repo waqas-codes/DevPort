@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import { Plus, Edit2, Trash2, X, Target } from 'lucide-react';
 import Button from '../../components/Button';
 
@@ -22,7 +22,7 @@ const SkillManager = () => {
     const fetchSkills = async () => {
         try {
             setError(null);
-            const res = await axios.get('/api/skills');
+            const res = await api.get('/skills');
             setSkills(res.data);
             setIsLoading(false);
         } catch (err) {
@@ -57,9 +57,9 @@ const SkillManager = () => {
         setError(null);
         try {
             if (editingSkill) {
-                await axios.put(`/api/skills/${editingSkill._id}`, formData);
+                await api.put(`/skills/${editingSkill._id}`, formData);
             } else {
-                await axios.post('/api/skills', formData);
+                await api.post('/skills', formData);
             }
             fetchSkills();
             setIsModalOpen(false);
@@ -73,7 +73,7 @@ const SkillManager = () => {
         if (window.confirm('Are you sure you want to delete this skill?')) {
             try {
                 setError(null);
-                await axios.delete(`/api/skills/${id}`);
+                await api.delete(`/skills/${id}`);
                 fetchSkills();
             } catch (err) {
                 console.error('Error deleting skill:', err);

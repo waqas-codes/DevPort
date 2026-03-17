@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import Button from '../../components/Button';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -25,7 +25,7 @@ const ContactForm = () => {
         setStatus({ type: '', message: '' });
 
         try {
-            await axios.post('/api/messages', formData);
+            await api.post('/messages', formData);
             setStatus({ type: 'success', message: 'Message sent successfully!' });
             setFormData({ name: '', email: '', message: '' });
         } catch (error) {

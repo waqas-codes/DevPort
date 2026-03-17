@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Target } from 'lucide-react';
-import axios from 'axios';
+import api from '../../utils/api';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,7 +13,7 @@ const Skills = () => {
     useEffect(() => {
         const getSkills = async () => {
             try {
-                const res = await axios.get('/api/skills');
+                const res = await api.get('/skills');
                 setFetchedSkills(res.data);
             } catch (err) {
                 console.error("Failed to fetch skills:", err);

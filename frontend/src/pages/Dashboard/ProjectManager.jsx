@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import { Plus, Edit2, Trash2, X, Upload, Link as LinkIcon, Github } from 'lucide-react';
 import Button from '../../components/Button';
 
@@ -27,7 +27,7 @@ const ProjectManager = () => {
     const fetchProjects = async () => {
         try {
             setError(null);
-            const res = await axios.get('/api/projects');
+            const res = await api.get('/projects');
             setProjects(res.data);
             setIsLoading(false);
         } catch (err) {
@@ -86,11 +86,11 @@ const ProjectManager = () => {
 
         try {
             if (editingProject) {
-                await axios.put(`/api/projects/${editingProject._id}`, data, {
+                await api.put(`/projects/${editingProject._id}`, data, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
             } else {
-                await axios.post('/api/projects', data, {
+                await api.post('/projects', data, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
             }
@@ -106,7 +106,7 @@ const ProjectManager = () => {
         if (window.confirm('Are you sure you want to delete this project?')) {
             try {
                 setError(null);
-                await axios.delete(`/api/projects/${id}`);
+                await api.delete(`/projects/${id}`);
                 fetchProjects();
             } catch (err) {
                 console.error('Error deleting project:', err);
@@ -139,7 +139,9 @@ const ProjectManager = () => {
                 {projects.map((project) => (
                     <div key={project._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex gap-6 hover:shadow-md transition-shadow">
                         <img
-                            src={project.image || 'https://via.placeholder.com/150'}
+                            src={project.image 
+                                ? (project.image.startsWith('http') || project.image.startsWith('blob:') ? project.image : `https://devport-mzh7.onrender.com${project.image}`) 
+                                : 'https://via.placeholder.com/150'}
                             className="w-32 h-32 object-cover rounded-2xl bg-slate-100"
                             alt={project.title}
                         />

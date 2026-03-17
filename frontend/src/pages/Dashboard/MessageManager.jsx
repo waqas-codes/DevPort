@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import { Trash2, MessageSquare, Mail, Calendar, User, Eye, X } from 'lucide-react';
 
 const MessageManager = () => {
@@ -15,7 +15,7 @@ const MessageManager = () => {
     const fetchMessages = async () => {
         try {
             setError(null);
-            const res = await axios.get('/api/messages');
+            const res = await api.get('/messages');
             setMessages(res.data);
             setIsLoading(false);
         } catch (err) {
@@ -29,7 +29,7 @@ const MessageManager = () => {
         if (window.confirm('Delete this message?')) {
             try {
                 setError(null);
-                await axios.delete(`/api/messages/${id}`);
+                await api.delete(`/messages/${id}`);
                 fetchMessages();
                 setSelectedMessage(null);
             } catch (err) {
@@ -43,7 +43,7 @@ const MessageManager = () => {
         setSelectedMessage(msg);
         if (!msg.isRead) {
             try {
-                await axios.put(`/api/messages/${msg._id}/read`);
+                await api.put(`/messages/${msg._id}/read`);
                 setMessages(prev => prev.map(m => m._id === msg._id ? { ...m, isRead: true } : m));
             } catch (err) {
                 console.error('Error marking message as read:', err);

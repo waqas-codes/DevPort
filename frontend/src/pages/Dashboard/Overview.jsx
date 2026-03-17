@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import { Briefcase, Cpu, MessageSquare, TrendingUp, Mail, User, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -15,9 +15,9 @@ const Overview = () => {
             try {
                 setIsLoading(true);
                 const [projectsRes, skillsRes, messagesRes] = await Promise.all([
-                    axios.get('/api/projects'),
-                    axios.get('/api/skills'),
-                    axios.get('/api/messages')
+                    api.get('/projects'),
+                    api.get('/skills'),
+                    api.get('/messages')
                 ]);
                 setProjects(projectsRes.data);
                 setSkills(skillsRes.data);
@@ -102,7 +102,9 @@ const Overview = () => {
                             projects.slice(0, 3).map((project) => (
                                 <div key={project._id} className="flex gap-4 p-4 rounded-2xl border border-slate-50 hover:border-slate-100 transition-colors">
                                     <img
-                                        src={project.image}
+                                        src={project.image 
+                                            ? (project.image.startsWith('http') ? project.image : `https://devport-mzh7.onrender.com${project.image}`) 
+                                            : 'https://via.placeholder.com/150'}
                                         alt={project.title}
                                         className="w-12 h-12 rounded-xl object-cover bg-slate-100"
                                     />

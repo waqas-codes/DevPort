@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -10,11 +10,9 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            // In a real app, you'd verify the token with the backend here
-            setUser({ role: 'admin' }); // For now, assume admin if token exists
+            // Token interceptor in api.js handles headers
+            setUser({ role: 'admin' });
         } else {
-            delete axios.defaults.headers.common['Authorization'];
             setUser(null);
         }
         setLoading(false);
@@ -22,7 +20,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const res = await axios.post('/api/auth/login', { email, password });
+            const res = await api.post('/auth/login', { email, password });
             const { token, user } = res.data;
             localStorage.setItem('token', token);
             setToken(token);

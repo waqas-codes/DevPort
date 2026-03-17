@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Github, ExternalLink, Code, ArrowRight } from 'lucide-react';
-import axios from 'axios';
+import api from '../../utils/api';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/Button';
@@ -14,7 +14,7 @@ const Projects = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const res = await axios.get('/api/projects');
+                const res = await api.get('/projects');
                 setProj(res.data);
             } catch (err) {
                 console.error("Failed to fetch projects:", err);
@@ -59,7 +59,9 @@ const Projects = () => {
                         <div key={project._id || i} className="project-card group flex flex-col h-full bg-slate-50 dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-800 hover:border-primary/20 transition-all duration-500 shadow-sm hover:shadow-2xl">
                             <div className="relative aspect-video overflow-hidden">
                                 <img
-                                    src={project.image && project.image !== 'no-image.jpg' ? project.image : 'https://via.placeholder.com/600x400?text=No+Image'}
+                                    src={project.image && project.image !== 'no-image.jpg' 
+                                        ? (project.image.startsWith('http') ? project.image : `https://devport-mzh7.onrender.com${project.image}`) 
+                                        : 'https://via.placeholder.com/600x400?text=No+Image'}
                                     alt={project.title}
                                     loading="lazy"
                                     className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
