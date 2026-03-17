@@ -10,6 +10,9 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./src/config/db');
 const seedAdmin = require('./src/utils/seedAdmin');
+const dns = require('dns')
+dns.setServers(["1.1.1.1", "8.8.8.8"])
+
 
 // Route files
 const authRoutes = require('./src/routes/authRoutes');
