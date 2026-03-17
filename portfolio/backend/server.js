@@ -1,6 +1,9 @@
+const dotenv = require('dotenv');
+// Load environment variables immediately
+dotenv.config();
+
 const express = require('express');
 const path = require('path');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -14,8 +17,7 @@ const projectRoutes = require('./src/routes/projectRoutes');
 const skillRoutes = require('./src/routes/skillRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
 
-// Load environment variables
-dotenv.config();
+// Database connection remains here
 
 // Connect to Database
 connectDB().then(() => {
