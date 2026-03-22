@@ -1,0 +1,14 @@
+{
+  "name": "devport",
+  "version": "1.0.0",
+  "description": "MERN Portfolio - DevPort",
+  "scripts": {
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && npm install",
+    "postinstall": "npm run install:frontend && npm run install:backend",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && node server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev"
+  }
+}
