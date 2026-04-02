@@ -12,6 +12,12 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: CLOUD_NAME
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: API_SECRET
+        sync: false
 
   # Frontend Static Site
   - type: web

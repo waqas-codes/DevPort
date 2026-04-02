@@ -1,15 +1,23 @@
 const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const { v2: cloudinary } = require('cloudinary');
 const path = require('path');
 
-// Configure storage
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../../uploads'));
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+});
+
+// Configure CloudinaryStorage for multer
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'devport/projects',
+        allowed_formats: ['jpg', 'jpeg', 'png'],
+        transformation: [{ width: 1200, height: 800, crop: 'limit', quality: 'auto' }],
     },
-    filename: function (req, file, cb) {
-        const uniqueName = Date.now() + '-' + file.originalname.replace(/\s+/g, '_');
-        cb(null, uniqueName);
-    }
 });
 
 // File filter — allow only images

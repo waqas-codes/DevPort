@@ -60,7 +60,7 @@ const Projects = () => {
                             <div className="relative aspect-video overflow-hidden">
                                 <img
                                     src={project.image && project.image !== 'no-image.jpg' 
-                                        ? (project.image.startsWith('http') ? project.image : `https://devport-mzh7.onrender.com${project.image}`) 
+                                        ? project.image 
                                         : 'https://via.placeholder.com/600x400?text=No+Image'}
                                     alt={project.title}
                                     loading="lazy"

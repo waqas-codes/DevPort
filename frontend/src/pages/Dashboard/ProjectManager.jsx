@@ -139,8 +139,8 @@ const ProjectManager = () => {
                 {projects.map((project) => (
                     <div key={project._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex gap-6 hover:shadow-md transition-shadow">
                         <img
-                            src={project.image 
-                                ? (project.image.startsWith('http') || project.image.startsWith('blob:') ? project.image : `https://devport-mzh7.onrender.com${project.image}`) 
+                            src={project.image && project.image !== 'no-image.jpg'
+                                ? project.image
                                 : 'https://via.placeholder.com/150'}
                             className="w-32 h-32 object-cover rounded-2xl bg-slate-100"
                             alt={project.title}

@@ -17,9 +17,9 @@ exports.getProjects = async (req, res) => {
 // @access  Private/Admin
 exports.createProject = async (req, res) => {
     try {
-        // If an image file was uploaded, set the image path
+        // If an image file was uploaded, use the Cloudinary URL
         if (req.file) {
-            req.body.image = '/uploads/' + req.file.filename;
+            req.body.image = req.file.path;
         }
 
         // Parse techStack if it comes as a comma-separated string (from FormData)
@@ -45,9 +45,9 @@ exports.updateProject = async (req, res) => {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        // If a new image file was uploaded, update the image path
+        // If a new image file was uploaded, use the Cloudinary URL
         if (req.file) {
-            req.body.image = '/uploads/' + req.file.filename;
+            req.body.image = req.file.path;
         }
 
         // Parse techStack if it comes as a comma-separated string (from FormData)
