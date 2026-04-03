@@ -8,6 +8,7 @@ const ProjectManager = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProject, setEditingProject] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -84,6 +85,7 @@ const ProjectManager = () => {
         if (formData.liveLink) data.append('liveLink', formData.liveLink);
         if (imageFile) data.append('image', imageFile);
 
+        setIsUploading(true);
         try {
             if (editingProject) {
                 await api.put(`/projects/${editingProject._id}`, data, {
@@ -94,9 +96,11 @@ const ProjectManager = () => {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
             }
+            setIsUploading(false);
             fetchProjects();
             setIsModalOpen(false);
         } catch (err) {
+            setIsUploading(false);
             console.error('Error saving project. Full error:', err.response?.data || err);
             setError(err.response?.data?.message || err.response?.data?.error || 'Error saving project. Please check your input.');
         }
@@ -269,8 +273,15 @@ const ProjectManager = () => {
                             </div>
 
                             <div className="pt-4 flex gap-4">
-                                <Button type="submit" variant="primary" className="flex-1 h-12">
-                                    {editingProject ? 'Update Project' : 'Publish Project'}
+                                <Button type="submit" variant="primary" className="flex-1 h-12" disabled={isUploading}>
+                                    {isUploading ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                            <span>{editingProject ? 'Updating...' : 'Publishing...'}</span>
+                                        </div>
+                                    ) : (
+                                        editingProject ? 'Update Project' : 'Publish Project'
+                                    )}
                                 </Button>
                                 <button
                                     type="button" onClick={() => setIsModalOpen(false)}
