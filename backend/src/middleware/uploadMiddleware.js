@@ -4,10 +4,19 @@ const { v2: cloudinary } = require('cloudinary');
 const path = require('path');
 
 // Configure Cloudinary
+const cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
+const api_key = process.env.CLOUDINARY_API_KEY;
+const api_secret = process.env.CLOUDINARY_API_SECRET;
+
+// Defensive check for Cloudinary configuration
+if (!cloud_name || !api_key || !api_secret) {
+    console.error('CLOUDINARY ERROR: Missing required environment variables. Uploads will fail.');
+}
+
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name,
+    api_key,
+    api_secret,
 });
 
 // Configure CloudinaryStorage for multer

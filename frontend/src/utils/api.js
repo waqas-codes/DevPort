@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://devport-mzh7.onrender.com/api',
+    // Dynamically set based on environment
+    baseURL: import.meta.env.VITE_API_URL || 
+             (import.meta.env.MODE === 'development' 
+                ? 'http://localhost:5000/api' 
+                : 'https://devport-mzh7.onrender.com/api'), // Replace with actual production URL if different
 });
 
 // Add a request interceptor to include the auth token

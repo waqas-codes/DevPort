@@ -31,7 +31,16 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+
+// Enhanced CORS Configuration
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production' 
+        ? ['https://devport-frontend.onrender.com', 'https://devport-mzh7.onrender.com'] // Fallback to provided URLs
+        : true, // Allow all in development
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+};
+app.use(cors(corsOptions));
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(morgan('dev'));
 
@@ -54,12 +63,20 @@ app.get('/', (req, res) => {
     res.send('Portfolio API is running...');
 });
 
-// Error Handling Middleware (Placeholder)
+// Error Handling Middleware
 app.use((err, req, res, next) => {
+    // Log the full error to the server console for debugging
+    console.error('SERVER ERROR:', {
+        message: err.message,
+        stack: err.stack,
+        path: req.path,
+        method: req.method
+    });
+
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     res.status(statusCode);
     res.json({
-        message: err.message,
+        message: err.message || 'Internal Server Error',
         stack: process.env.NODE_ENV === 'production' ? null : err.stack,
     });
 });
